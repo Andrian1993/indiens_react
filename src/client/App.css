@@ -1,0 +1,51 @@
+
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+/*div {
+  margin-bottom: 24px;
+}*/
+
+pre {
+  margin-top: 36px;
+  background-color: lightgray;
+}
+
+
+
+/*
+.join_title {
+  background-image: url("/img/join/join_bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #e84438;
+  color: #fff;
+  text-align: center;
+  padding: 120px 0; }
+  .join_title.pb80 {
+    padding-bottom: 200px; }
+  .join_title h3 {
+    font-size: 22pt;
+    font-weight: 400;
+    margin-bottom: 60px; }
+  .join_title p {
+    font-size: 18pt;
+    line-height: 160%;
+    margin-top: 50px; }
+  .join_title + .input_form {
+    width: 360px;
+    margin: auto;
+    padding: 0;
+    padding-top: 50px;
+    position: relative; }
+    .join_title + .input_form > p {
+      font-size: 10pt;
+      color: #777;
+      position: absolute;
+      top: 125px;
+      right: -135px;
+      z-index: 999; }
+*/

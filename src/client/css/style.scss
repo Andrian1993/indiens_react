@@ -1,0 +1,507 @@
+@charset "UTF-8";
+//페이지 공통 컬러팔레트
+$base-color: #e43a33;
+$base-color2: #d02720;
+
+/*기본 css*/
+* {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  &:link, &:active, &:focus, &:visited {
+    text-decoration: none;
+    color: #000;
+  }
+}
+
+.MuiPaper-root.MuiPaper-rounded {
+  border-radius: 13px;
+  .title {
+    text-align: center;
+    background: $base-color;
+    color: #fff;
+  }
+  .content {
+    margin-top: 15px;
+  }
+  .actions {
+
+  }
+}
+
+.navbar {
+  background-color: #333;
+  .nav-link {
+    color: #fff;
+    &:hover {
+      color: $base-color;
+    }
+  }
+  .navbar-nav {
+    color: #fff;
+  }
+}
+
+.join_title {
+  background-image: url("../img/join/join_bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #e84438;
+  color: #fff;
+  text-align: center;
+  padding: 120px 0;
+  &.pb80{
+    padding-bottom: 200px;
+  }
+  h3 {
+    font-size: 22pt;
+    font-weight: 400;
+    margin-bottom: 60px;
+  }
+  p {
+    font-size: 18pt;
+    line-height: 160%;
+    margin-top: 50px;
+  }
+  &+.input_form {
+    width: 360px;
+    margin: auto;
+    padding: 0;
+    padding-top: 50px;
+    position: relative;
+    &>p {
+      font-size: 10pt;
+      color: #777;
+      position: absolute;
+      top: 125px;
+      right: -135px;
+      z-index: 999;
+    }
+  }
+}
+
+.join_btn {
+  display: flex;
+  width: 360px;
+  margin: 0 auto 30px;
+  &.right {
+    text-align: right;
+    width: 1000px;
+    margin: -106px auto 0;
+    button.MuiButton-root {
+      background-color: #555;
+    }
+    .md-button.md-default-theme:not([disabled]).md-focused, .md-button:not([disabled]).md-focused, .md-button.md-default-theme:not([disabled]):hover, .md-button:not([disabled]):hover{
+      background-color: #333
+    }
+  }
+  button.MuiButton-root {
+    color: #fff;
+    margin: 6px 8px;
+    margin-top: 25px;
+    //line-height: 45px;
+    min-height: 45px;
+    background-color: $base-color;
+    border-radius: 30px;
+    &.gray{
+      background-color: #ccc;
+      color: #333;
+    }
+    /*&.next {
+      width: 80%;
+    }*/
+  }
+  .MuiButton-root.Mui-focusVisible {
+    background-color: $base-color2;
+  }
+
+  .MuiButton-root.gray.Mui-focusVisible {
+    background-color: #aaa;
+  }
+  /*.md-button.md-default-theme:not([disabled]).md-focused, .md-button:not([disabled]).md-focused, .md-button.md-default-theme:not([disabled]):hover, .md-button:not([disabled]):hover{
+    background-color: $base-color2;
+  }
+  .md-button.gray.md-default-theme:not([disabled]).md-focused, .md-button.gray:not([disabled]).md-focused, .md-button.gray.md-default-theme:not([disabled]):hover, .gray.md-button:not([disabled]):hover{
+    background-color: #aaa;
+  }*/
+}
+
+//SignUp page step1
+.signUpForm {
+  width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  .nextButton {
+    margin-bottom: 10px;
+  }
+}
+
+// SignUp page step2(회원가입 - 직군 선택)
+.jobs label span:first-child {display: none;}
+
+.jobs {
+  //width: 1450px;
+  margin-top: -120px;
+  margin-bottom: 80px;
+  label.formControl {
+    margin-left: 0;
+    margin-right: 0;
+    width: 185px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    color: #333;
+    box-sizing: border-box;
+    box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+    border: 2px solid #fff;
+    &.checked {
+      border: 2px solid $base-color;
+    }
+    a {
+      display: block;
+      padding: 50px;
+      cursor: pointer;
+      img {
+        margin-bottom: 20px;
+      }
+    }
+  }
+  .signtype-radio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .error-message {
+    text-align: center;
+  }
+}
+
+//파일업로드용 개별 스타일링
+.photo {
+  margin-bottom: 30px;
+  margin-top: 30px;
+  .input_label {
+    font-size: 10pt;
+    min-height: 30px;
+  }
+  .min_height{
+    min-height: 50px;
+  }
+  img {
+    max-width: 150px;
+    margin: 10px 10px 0 0;
+    min-width: 50px;
+    min-height: 50px;
+  }
+  .product_img{
+    margin-top: 10px;
+    div {
+      position: relative;
+      min-width: 160px;
+      min-height: 160px;
+      float: left;
+      max-height: 160px;
+      margin-bottom: 5px;
+      &> span {
+        width: 26px;
+        height: 26px;
+        position: absolute;
+        display: inline-block;
+        top: 5px;
+        right: 15px;
+        background-image: url("../img/photo_del.png");
+        text-indent: -10000px;
+        cursor: pointer;
+      }
+    }
+    img {
+      margin-right: 10px;
+      max-width: 160px;
+      max-height: 160px;
+      min-width: 160px;
+      margin-top: 0;
+      margin-left: 0;
+    }
+  }
+  .clip_list{
+    padding-bottom: 10px;
+    margin-top: 10px;
+    border-bottom: 1px solid #ddd;
+    align-items: flex-end;
+  }
+  .input_add_btn {
+    background-color: #e43a33;
+    color: #fff;
+    margin-right: 0;
+    border-radius: 50px;
+    margin-top: 15px;
+    padding: 11px 10px 10px;
+    margin-bottom: 0;
+    line-height: 16px;
+    min-height: 16px;
+    min-width: 42px;
+    border: none;
+    img {
+      min-width: 19px;
+      min-height: 19px;
+      margin: 0;
+    }
+    &.del {
+      background-color: #555;
+      line-height: 20px;
+      min-height: 20px;
+      min-width: 20px;
+      float: right;
+      margin-top: 0;
+      &:hover{
+        background-color: #444;
+      }
+    }
+  }
+  .upload_button{
+    label.MuiButton-root{
+      background-color: $base-color;
+      color: #fff;
+      margin-top: 25px;
+      min-height: 45px;
+      border-radius: 30px;
+    }
+  }
+}
+
+//SignUp page step3(portfolio)
+.portfolio{
+  width: 1000px;
+  margin: auto;
+  padding: 40px 0;
+  .input-container {
+    margin-bottom: 18px;
+  }
+  .label_plus {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    label {
+      margin-bottom: 0;
+    }
+  }
+  .project-info {
+    display: flex;
+    justify-content: space-between;
+    .MuiFormControl-root {
+      width: inherit;
+    }
+    .project-creator {
+      display: flex;
+      align-items: flex-end;
+    }
+    .minus-button {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .file-label {
+    margin-top: 15px;
+    .input_label {
+      font-size: 10pt;
+      min-height: 30px;
+    }
+  }
+  .experience {
+    width: inherit;
+  }
+  md-checkbox {
+    margin-bottom: 0;
+    font-size: 11pt;
+    .md-label {
+      margin-top: -5px;
+    }
+  }
+  .chk_list{
+    md-input-container {
+      margin-bottom: 16px;
+      float: left;
+      &.md-block {
+        margin: 10px;
+      }
+      .md-errors-spacer {
+        min-height: 0
+      }
+    }
+    md-checkbox {
+      margin-top: 5px;
+      font-size: 10pt;
+      float: left;
+      .md-label {
+        margin-top: -3px;
+      }
+    }
+  }
+}
+
+
+
+
+button.MuiButton-root.input_add_btn {
+  background-color: $base-color;
+  color: #fff;
+  margin-right: 0;
+  border-radius: 50px;
+  margin-top: 0;
+  padding: 11px 10px 10px;
+  margin-bottom: 0;
+  line-height: 16px;
+  min-height: 16px;
+  min-width: 42px;
+  &.gray {
+    background-color: #555;
+  }
+}
+
+.label_txt {
+  font-size: 9pt;
+  color: #555;
+  &+md-input-container{
+    margin-top: 10px;
+  }
+}
+
+.md-raised.input_add_btn.md-button.md-default-theme:not([disabled]).md-focused, .md-raised.input_add_btn.md-button:not([disabled]).md-focused, .md-raised.input_add_btn.md-button.md-default-theme:not([disabled]):hover, .md-raised.input_add_btn.md-button:not([disabled]):hover {  background-color: $base-color2}
+
+/*푸터*/
+.footer{
+  color: #fff;
+  background-color: #333;
+  font-size: 10pt;
+  padding: 35px 25px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  height: 130px;
+  img {
+    margin: 10px 70px 10px 0;
+    float: left;
+  }
+  &>div{
+    width: 820px;
+    margin: auto;
+    overflow: hidden;
+    div{
+      float: left;
+      ul{
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0;
+        li{
+          padding: 0 10px 2px 10px;
+
+          font-size: 10pt;
+          a{
+            cursor: pointer;
+            color: #fff;
+          }
+          &:first-child{
+            padding-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.error-message {
+  color: red;
+  margin: 0 auto;
+}
+
+//인풋영역 공통 css
+.input_form {
+  padding: 25px 20px 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+
+  &.nob{
+    border:none;
+    margin-bottom: 0;
+  }
+  md-input-container{
+    margin-bottom: 0;
+    margin-top: 0 !important;
+    &.selectrow{
+      margin-top: 40px;
+      & ~ .flex-5{
+        padding: 55px 0 0;
+      }
+    }
+    .md-input{
+      height: 46px;
+      background-color: #eee;
+      border-radius: 80px;
+      padding: 10px 20px;
+    }
+    .md-select-value{
+      min-height: 40px;
+    }
+    .md-errors-spacer {
+      min-height: 5px;
+    }
+  }
+  //체크박스,라디오용 추가 레이블
+  .radio_label {
+    font-size: 9pt;
+    color: #777;
+    margin-top: 25px;
+    margin-bottom: 10px;
+  }
+  md-checkbox.md-default-theme.md-checked .md-icon, md-checkbox.md-checked .md-icon {
+    background-color: $base-color;
+    width: 20px;
+    height: 20px;
+  }
+  md-radio-button.md-default-theme .md-on, md-radio-button .md-on {background-color: $base-color;}
+  md-radio-button.md-default-theme.md-checked .md-off, md-radio-button.md-checked .md-off {border-color: $base-color;}
+  &>div:first-child .photo{
+    margin-top: 0;
+  }
+  .adress{
+    .md-button {
+      border: 1px solid #ffba00;
+      border-radius: 4px;
+      color: #333;
+      background-color: #ffcc00;
+      margin-left: 0;
+      min-width: 120px;
+    }
+    .md-button.md-default-theme:not([disabled]).md-focused, .md-button:not([disabled]).md-focused, .md-button.md-default-theme:not([disabled]):hover, .md-button:not([disabled]):hover{
+      background-color: #ffba00;
+    }
+  }
+  //인풋 사이 공백 더 줄이기
+  .flex-5, .layout-row>.flex-5 {
+    max-width: 2%;
+  }
+  &.total_sum {
+    padding: 25px 20px;
+    .radio_label {
+      margin-top: 0;
+    }
+    .total {
+      text-align: right;
+      span {
+        color: #ffbe00;
+        font-size: 26pt;
+      }
+    }
+  }
+}

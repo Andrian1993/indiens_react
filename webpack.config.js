@@ -8,6 +8,7 @@ module.exports = {
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
     path: path.join(__dirname, outputDirectory),
+    publicPath: '/',
     filename: 'bundle.js'
   },
   module: {
@@ -19,8 +20,8 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        test: /\.(css|s[ac]ss)$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
@@ -35,8 +36,14 @@ module.exports = {
     port: 3000,
     open: true,
     proxy: {
-      '/api': 'http://localhost:8080'
-    }
+      '/api': {
+        target: 'http://localhost:8080',
+        pathRewrite: {'^/api' : ''},
+        secure:false,
+        changeOrigin:true
+      }
+    },
+    historyApiFallback: true
   },
   plugins: [
     new CleanWebpackPlugin([outputDirectory]),
