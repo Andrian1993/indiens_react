@@ -52,7 +52,7 @@ class LoginDialog extends Component {
 
     render() {
         return (
-                <Dialog open={this.props.openDialog} onEnter={console.log('Hey.')}>
+                <Dialog open={this.props.openDialog}>
                     <DialogTitle>Log In</DialogTitle>
                     <DialogContent className="signUpForm">
                         <FormControl className="signUpFormElement">

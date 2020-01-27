@@ -4,17 +4,29 @@ import '../../css/style.scss';
 import '../../App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Slider from 'react-slick';
+import Button from '@material-ui/core/Button';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import prjImage from '../../img/ex/ex_photo.png';
 import topLogo from '../../img/main/top_img_logo.png';
+import Common from '../modules/Common';
 
 function Home() {
+  const types = Common.jobTypes();
+  const userType = '';
+
   const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    arrows: true,
     autoplay: true,
     autoplaySpeed: 2000
   };
+
+  const projects = [{}, {}, {}, {}, {}, {}];
 
   return (
     <div className="Home">
@@ -39,17 +51,51 @@ function Home() {
             </a>
           </li>
         </ul> */}
+
+        <div className="jobs">
+          <RadioGroup className="signtype-radio" value={userType} aria-label="gender" name="gender1" onChange={console.log('1')}>
+            {types.map((job, index) => (
+              <FormControlLabel
+                key={index}
+                className={`formControl ${userType === (index + 1).toString() ? 'checked' : ''}`}
+                value={(index + 1).toString()}
+                control={
+                  <Radio />}
+                label={(
+                  <React.Fragment>
+                    <a>
+                      <img src={job.imgUrl} alt={`job${index}`} />
+                      {job.name}
+                    </a>
+                  </React.Fragment>
+                          )}
+              />
+            ))}
+          </RadioGroup>
+        </div>
+
         <div className="td simulat_content">
           <div className="td simulat_area_txt">
             <div className="tit_area">인디언즈에서 게임 프로젝트를 개설해보세요.</div>
-            <p><a href="/">프로젝트 개설</a></p>
+            <p><a href="/" style={{ color: '#ffffff' }}>프로젝트 개설</a></p>
           </div>
         </div>
       </div>
 
+      <div className="carousel-zone">
+        <Slider {...settings}>
+          {projects.map((project, index) => (
+            <div>
+              <img src={prjImage} />
+              <h3 />
+            </div>
+          ))}
+        </Slider>
+      </div>
+
       <div className="search">
         <input type="text" ng-model="vm.search.PJT_NAME" placeholder="프로젝트 검색" />
-        <md-button aria-label="검색" className="search_icon" ng-click="vm.findProject(vm.search.PJT_NAME)">검색</md-button>
+        <Button className="search_icon">Search</Button>
       </div>
 
       <div className="container">
@@ -176,39 +222,6 @@ function Home() {
                 FAQ 내용 외 다른 내용이 궁금하시다면 문의해주세요!
           <a className="btn" ui-sref="Questions">문의하기</a>
         </p>
-      </div>
-
-
-      <div className="carousel-zone">
-        <div>
-          <Slider {...settings}>
-            <div>
-              <img />
-              <h3 />
-            </div>
-            <div>
-              <img />
-              <h3 />
-            </div>
-            <div>
-              <img />
-              <h3 />
-            </div>
-            <div>
-              <img />
-              <h3 />
-            </div>
-            <div>
-              <img />
-              <h3 />
-            </div>
-            <div>
-              <img />
-              <h3 />
-            </div>
-          </Slider>
-        </div>
-
       </div>
 
     </div>

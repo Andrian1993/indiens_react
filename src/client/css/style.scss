@@ -22,15 +22,15 @@ a {
 
 .MuiPaper-root.MuiPaper-rounded {
   border-radius: 13px;
-  .title {
+  .dialog_title {
     text-align: center;
     background: $base-color;
     color: #fff;
   }
-  .content {
+  .dialog_content {
     margin-top: 15px;
   }
-  .actions {
+  .dialog_actions {
 
   }
 }
@@ -139,6 +139,7 @@ a {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  padding-top: 30px;
 
   .nextButton {
     margin-bottom: 10px;

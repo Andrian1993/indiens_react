@@ -33,8 +33,9 @@ class Sign {
     return localStorage.getItem('token') !== null;
   }
 
-  static deauthenticateUser() {
-    localStorage.removeItem('token');
+  static deleteUserInfo() {
+    sessionStorage.removeItem('userInfo');
+    sessionStorage.removeItem('userType');
   }
 }
 

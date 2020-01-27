@@ -16,13 +16,13 @@ function SimpleDialog({
 }) {
   return (
     <Dialog open={isOpen} className="dialog">
-      <DialogTitle className="title">
+      <DialogTitle className="dialog_title">
         {title}
       </DialogTitle>
-      <DialogContent className="content">
+      <DialogContent className="dialog_content">
         {content}
       </DialogContent>
-      <DialogActions className="actions">
+      <DialogActions className="dialog_actions">
         <Button onClick={close} color="primary">
                 Close
         </Button>

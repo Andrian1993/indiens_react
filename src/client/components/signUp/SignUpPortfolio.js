@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import '../../css/style.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -31,12 +31,13 @@ function SignUpPortfolio({
   changeCheckbox,
   check,
   saveUser,
+  signed,
+  signUser,
   goBack,
   goNext
 }) {
   const [errors, setErrors] = useState({ projects: [] });
   const [files, setFiles] = useState([]);
-  const [signed, setSigned] = useState(false);
 
   const experience = Common.userExperience();
 
@@ -58,7 +59,6 @@ function SignUpPortfolio({
     function checkObject() {
       let result = true;
       payload.errors.projects.map((item, index) => {
-
         for (const key in item) {
           if (item[key]) {
             result = false;
@@ -96,24 +96,12 @@ function SignUpPortfolio({
     return payload;
   }
 
-  function uploadFile(contentType, data, setResponse) {
-    axios({
-      url: `${API_BASE}/upload`,
-      method: 'POST',
-      data,
-      headers: {
-        'Content-Type': contentType
-      }
-    }).then((response) => {
-      setResponse(response.data);
-    }).catch((error) => {
-      setResponse('error');
-    });
-  }
-
   function dialogSwitch() {
-    setSigned(!signed);
-    if (signed) history.push('/');
+    signUser();
+    if (signed) {
+      Sign.deleteUserInfo();
+      history.push('/');
+    }
   }
 
   function handleClick() {
@@ -124,11 +112,6 @@ function SignUpPortfolio({
         if (err) {
           setErrors({ ...errors, ...err });
         } else if (files.length > 0) {
-          /* for (let i = 0; i < files.length; i++) {
-            const formData = new FormData();
-            formData.append('file', files[i]);
-            uploadFile('multipart/form-data', formData, msg => console.log(msg));
-          } */
           const uploaders = files.map((file) => {
             const formData = new FormData();
             formData.append('file', file.file);
@@ -178,13 +161,12 @@ function SignUpPortfolio({
     setFiles([...filesCopy]);
   }
 
-
   return (
     <div className="join_form">
       <SimpleDialog
         isOpen={signed}
         content="You signed up for Indians. Please log in."
-        title="indiens"
+        title="Indiens"
         close={dialogSwitch}
       />
       <div className="join_title pb80">

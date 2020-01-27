@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Switch, Route, Prompt } from 'react-router-dom';
 import axios from 'axios';
 import SignUpForm from './SignUpForm';
 import SignUpType from './SignUpType';
@@ -10,6 +10,8 @@ function SignUp(props) {
   const [check, setCheck] = useState(false);
   const [user, setUser] = useState(Sign.getUserInfo());
   const [userType, setUserType] = useState(Sign.getUserType());
+  const [signed, setSigned] = useState(false);
+  const [promptMessage, setPromptMessage] = useState(false);
   const [userPortfolio, setUserPortfolio] = useState({
     experience: '',
     projects: [
@@ -20,6 +22,27 @@ function SignUp(props) {
       }
     ]
   });
+
+  useEffect(() => {
+    console.log('render');
+    // Указываем, как сбро сить этот эффект:
+    return function CloseOnSigning() {
+      // console.log('test');
+      if (sessionStorage.getItem('userInfo') && !signed) {
+        // console.log('cancel signing');
+        // Sign.deleteUserInfo();
+        // setPromptMessage(true);
+      }
+    };
+  }, [promptMessage]);
+
+  function promptChange() {
+    // setPromptMessage(!promptMessage);
+  }
+
+  useEffect(() => function CloseFunction() {
+    Sign.deleteUserInfo();
+  }, []);
 
   function handleChange(event) {
     const { name } = event.target;
@@ -97,60 +120,75 @@ function SignUp(props) {
       .catch(error => (error));
   }
 
+  function signUser() {
+    setSigned(!signed);
+  }
+
+
   function goNext(url) {
+    promptChange();
     props.history.push(`${props.match.path}/${url}`);
   }
 
   function goBack() {
+    promptChange();
     props.history.goBack();
   }
 
   return (
-    <Switch>
-      <Route
-        exact
-        path={props.match.path}
-        render={props => (
-          <SignUpForm
-            {...props}
-            user={user}
-            goBack={goBack}
-            goNext={goNext}
-            handleChange={handleChange}
-          />
-        )}
+    <React.Fragment>
+      <Prompt
+        when={promptMessage}
+        message="Are you sure you want to leave?"
       />
-      <Route
-        path={`${props.match.path}/type`}
-        render={props => (
-          <SignUpType
-            {...props}
-            userType={userType}
-            handleChange={handleChangeType}
-            goBack={goBack}
-            goNext={goNext}
-          />
-        )}
-      />
-      <Route
-        path={`${props.match.path}/portfolio`}
-        render={props => (
-          <SignUpPortfolio
-            {...props}
-            portfolio={userPortfolio}
-            addProject={addProject}
-            deleteProject={deleteProject}
-            changeProject={changeProject}
-            changeExperience={changeExperience}
-            changeCheckbox={handleChangeCheckbox}
-            check={check}
-            saveUser={saveUser}
-            goBack={goBack}
-            goNext={goNext}
-          />
-        )}
-      />
-    </Switch>
+      <Switch>
+        <Route
+          exact
+          path={props.match.path}
+          render={props => (
+            <SignUpForm
+              {...props}
+              user={user}
+              goBack={goBack}
+              goNext={goNext}
+              handleChange={handleChange}
+            />
+          )}
+        />
+        <Route
+          path={`${props.match.path}/type`}
+          render={props => (
+            <SignUpType
+              {...props}
+              userType={userType}
+              handleChange={handleChangeType}
+              goBack={goBack}
+              goNext={goNext}
+            />
+          )}
+        />
+        <Route
+          path={`${props.match.path}/portfolio`}
+          render={props => (
+            <SignUpPortfolio
+              {...props}
+              portfolio={userPortfolio}
+              addProject={addProject}
+              deleteProject={deleteProject}
+              changeProject={changeProject}
+              changeExperience={changeExperience}
+              changeCheckbox={handleChangeCheckbox}
+              check={check}
+              saveUser={saveUser}
+              signed={signed}
+              signUser={signUser}
+              goBack={goBack}
+              goNext={goNext}
+            />
+          )}
+        />
+      </Switch>
+    </React.Fragment>
   );
 }
 
