@@ -94,6 +94,32 @@ class Common {
     return experience;
   }
 
+  static userLang() {
+    const userLanguage = [
+      {
+        LNG: 1,
+        LNG_NAME: 'JAVA'
+      },
+      {
+        LNG: 2,
+        LNG_NAME: 'C'
+      },
+      {
+        LNG: 3,
+        LNG_NAME: 'C++'
+      },
+      {
+        LNG: 4,
+        LNG_NAME: 'Python'
+      },
+      {
+        LNG: 5,
+        LNG_NAME: '기타'
+      }
+    ];
+    return userLanguage;
+  }
+
   static getUserInfo() {
     return (sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo'))
       : {
@@ -108,6 +134,8 @@ class Common {
   static getUserType() {
     return sessionStorage.getItem('userType') ? sessionStorage.getItem('userType') : '';
   }
+
+
 }
 
 export default Common;

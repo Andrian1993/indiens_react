@@ -57,7 +57,7 @@ module.exports = new PassportLocalStrategy({
                 return done(null, token, data);
             });*/
 
-            return user._modelOptions.instanceMethods.validPassword(userData.password, (passwordErr, isMatch) => {
+            return user._modelOptions.instanceMethods.validPassword(userData.password, user.dataValues.MEM_PASS, (passwordErr, isMatch) => {
                 if (passwordErr) { return done(passwordErr); }
 
                 if (!isMatch) {
@@ -74,7 +74,7 @@ module.exports = new PassportLocalStrategy({
                 // create a token string
                 const token = jwt.sign(payload, config.jwtSecret);
                 const data = {
-                    name: user.dataValues.MEM_NAME
+                    id: user.dataValues.MEM_ID
                 };
 
                 return done(null, token, data);

@@ -131,7 +131,7 @@ const SignUpForm = ({
         <div className="error-message">{errors.message}</div>
 
         <div layout="row" className="join_btn type">
-          <Button variant="contained" className="gray" style={{ width: '20%' }} onClick={goBack}>
+          <Button variant="contained" className="gray" style={{ width: '20%' }} onClick={() => goBack('/')}>
                         Back
           </Button>
           <Button variant="contained" style={{ width: '70%' }} onClick={handleClick}>

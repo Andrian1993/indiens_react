@@ -1,21 +1,34 @@
 const express = require('express');
-const Message = require('../models').TB_MESSAGE;
+const Member = require('../models').TB_MEMBER;
+const common = require('../config/common');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  console.log('getting all books');
-  Message.findAll().then((result) => {
-    res.json(result);
+router.get('/userName', (req, res) => {
+  const data = req.query;
+  const { token } = data;
+
+  const decoded = common.getIdFromToken(token);
+
+
+  Member.findOne({
+    where: { MEM_ID: decoded.sub }
+  }).then((user) => {
+    if (user) {
+      return res.json({
+        code: 200,
+        data: user.dataValues
+      });
+    }
   });
 });
 
 router.get('/:id', (req, res) => {
   console.log('getting one book');
   /* Message.findById(req.params.id).then(result => {
-        console.log(result);
-        res.json(result);
-    }); */
+          console.log(result);
+          res.json(result);
+      }); */
 
   Message.findOne({ where: { MSG_ID: req.params.id } }).then((result) => {
     console.log(result);

@@ -9,7 +9,10 @@ function PortfolioFiles({
   jobType,
   addPicture,
   deletePicture,
-  files
+  files,
+  portfolio,
+  textFieldChange,
+  checkboxClick
 }) {
   const [upload, setUpload] = useState(false);
 
@@ -32,7 +35,12 @@ function PortfolioFiles({
     }
     case '2': {
       return (
-        <Programmer />
+        <Programmer
+          langCheck={portfolio.langs}
+          langEtc={portfolio.langEtc}
+          langEtcChange={textFieldChange}
+          checkboxClick={checkboxClick}
+        />
       );
     }
     case '3': {
@@ -73,12 +81,18 @@ function PortfolioFiles({
     }
     case '6': {
       return (
-        <Creator />
+        <Creator
+          link={portfolio.link}
+          linkChange={textFieldChange}
+        />
       );
     }
     case '7': {
       return (
-        <Others />
+        <Others
+          portfolio={portfolio}
+          textFieldChange={textFieldChange}
+        />
       );
     }
   }

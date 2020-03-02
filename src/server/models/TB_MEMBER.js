@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 const bcrypt = require('bcryptjs');
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('TB_MEMBER', {
     MEM_ID: {
       type: DataTypes.INTEGER(11),
@@ -73,8 +73,11 @@ module.exports = function(sequelize, DataTypes) {
       generateHash(password) {
         return bcrypt.hash(password, bcrypt.genSaltSync(8));
       },
-      validPassword(password) {
-        return bcrypt.compare(password, this.password);
+      validPassword(password, hash, callback) {
+        return bcrypt.compare(password, hash, (err, res) => {
+          if (err) callback(err, null);
+          else callback(null, res);
+        });
       }
     }
   });

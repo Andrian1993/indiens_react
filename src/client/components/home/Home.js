@@ -34,7 +34,7 @@ function Home() {
         <div className="td mobile_content">
           <div id="mobile_area_txt" className="td mobile_area_txt">
             <img src={topLogo} alt="indiens" />
-            <div className="tit_area">인디언즈에서 게임 제작을 위한 팀원을 찾아보세요.</div>
+            <div className="tit_area">Find team members for game production in the Indians.</div>
           </div>
 
         </div>
@@ -85,7 +85,7 @@ function Home() {
       <div className="carousel-zone">
         <Slider {...settings}>
           {projects.map((project, index) => (
-            <div>
+            <div key={index}>
               <img src={prjImage} />
               <h3 />
             </div>

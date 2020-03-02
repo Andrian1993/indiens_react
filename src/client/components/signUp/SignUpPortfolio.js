@@ -1,4 +1,5 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, { Component, useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import '../../css/style.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -23,23 +24,95 @@ import SimpleDialog from '../dialog/Dialog';
 
 function SignUpPortfolio({
   history,
-  portfolio,
-  addProject,
-  deleteProject,
-  changeProject,
-  changeExperience,
+  match,
   changeCheckbox,
   check,
   saveUser,
   signed,
   signUser,
-  goBack,
-  goNext
+  goBack
 }) {
   const [errors, setErrors] = useState({ projects: [] });
   const [files, setFiles] = useState([]);
+  const [userPortfolio, setUserPortfolio] = useState({
+    experience: '',
+    projects: [
+      {
+        type: '',
+        name: '',
+        role: ''
+      }
+    ],
+    langs: {
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+      5: false
+    },
+    langEtc: '',
+    link: '',
+    job: ''
+  });
+
+  useEffect(() => function CloseFunction() {
+    Sign.deleteUserInfo();
+  }, []);
 
   const experience = Common.userExperience();
+
+  const langClick = name => (event) => {
+    const { checked } = event.target;
+    const { langs } = userPortfolio;
+    langs[name] = checked;
+
+    setUserPortfolio({
+      ...userPortfolio, langs
+    });
+  };
+
+  function changeProject(event, index) {
+    const { name } = event.target;
+    const { value } = event.target;
+    const { projects } = userPortfolio;
+    projects[index][name] = value;
+
+    setUserPortfolio({
+      ...userPortfolio, projects
+    });
+  }
+
+  function addProject() {
+    const { projects } = userPortfolio;
+    projects.push({
+      type: '',
+      name: '',
+      role: ''
+    });
+    setUserPortfolio({
+      ...userPortfolio, projects
+    });
+  }
+
+  function deleteProject(event, projectIndex) {
+    const projects = userPortfolio.projects.filter((project, index) => {
+      if (index !== projectIndex) return project;
+      return null;
+    });
+
+    setUserPortfolio({
+      ...userPortfolio, projects
+    });
+  }
+
+  function changeExperience(event) {
+    const { name } = event.target;
+    const { value } = event.target;
+
+    setUserPortfolio({
+      ...userPortfolio, [name]: value
+    });
+  }
 
   function getError(index, key) {
     if (errors.projects[index] && errors.projects[index][key]) {
@@ -105,10 +178,10 @@ function SignUpPortfolio({
   }
 
   function handleClick() {
-    const payload = validateCheck(portfolio);
+    const payload = validateCheck(userPortfolio);
     if (payload.success) {
       setErrors({ projects: [] });
-      saveUser((err, id) => {
+      saveUser(userPortfolio, (err, id) => {
         if (err) {
           setErrors({ ...errors, ...err });
         } else if (files.length > 0) {
@@ -126,6 +199,8 @@ function SignUpPortfolio({
           axios.all(uploaders).then(() => {
             dialogSwitch();
           });
+        } else {
+          dialogSwitch();
         }
       });
     } else {
@@ -162,148 +237,154 @@ function SignUpPortfolio({
   }
 
   return (
-    <div className="join_form">
-      <SimpleDialog
-        isOpen={signed}
-        content="You signed up for Indians. Please log in."
-        title="Indiens"
-        close={dialogSwitch}
-      />
-      <div className="join_title pb80">
-        <h3>
-Now let's check some things you can do
-          <br />
-as an Indian.
-        </h3>
-        <img src={Step3} alt="step3" />
-        <p>
-                    STEP 3
-          <br />
-                    Register your portfolio
-        </p>
-      </div>
-
-      <Container className="portfolio">
-        <Row className="input-container">
-          <Col md={3}>
-            <FormControl className="experience" error={!!errors.experience}>
-              <InputLabel id="Experience">Experience</InputLabel>
-              <Select
-                labelId="Experience"
-                id="experience-select"
-                name="experience"
-                value={portfolio.experience}
-                onChange={changeExperience}
-                defaultValue="Select"
-              >
-                {experience.map((data, index) => (
-                  <MenuItem key={data.id} value={data.id}>{data.title}</MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>{errors.experience}</FormHelperText>
-            </FormControl>
-          </Col>
-          <Col />
-        </Row>
-
-        <Row>
-          <Col className="label_plus">
-            <label className="label_txt">Game developed or participated</label>
-            {
-                            check ? null
-                              : <Button variant="contained" className="input_add_btn" onClick={addProject}><img src={Plus} alt="plus" /></Button>
-                        }
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  checked={check}
-                  onChange={changeCheckbox}
-                  value="checkedB"
-                  color="primary"
-                />
-                              )}
-              label="Later"
-            />
-          </Col>
-        </Row>
-
-        {
-                    check ? null
-                      : (
-                        <React.Fragment>
-                          {portfolio.projects.map((project, index) => (
-                            <Row key={index} className="project-info">
-                              <Col className="project-creator" md={3}>
-                                <FormControl error={!!getError(index, 'type')}>
-                                  <InputLabel id="ProjectType">Project type</InputLabel>
-                                  <Select
-                                    labelId="ProjectType"
-                                    id="experience-select"
-                                    name="type"
-                                    value={project.type}
-                                    onChange={event => changeProject(event, index)}
-                                  >
-                                    <MenuItem value={1}>Personal</MenuItem>
-                                    <MenuItem value={2}>Participated</MenuItem>
-                                  </Select>
-                                  {errors.projects[index]
-                                    ? <FormHelperText>{getError(index, 'type')}</FormHelperText> : null
-                                  }
-                                </FormControl>
-                              </Col>
-                              <Col>
-                                <FormControl>
-                                  <TextField id="projName" label="Name" name="name" value={project.name} onChange={event => changeProject(event, index)} error={!!getError(index, 'name')} helperText={getError(index, 'name')} />
-                                </FormControl>
-                              </Col>
-                              {
-                                            project.type === 2
-                                              ? (
-                                                <Col>
-                                                  <FormControl>
-                                                    <TextField id="projRole" label="Role" name="role" value={project.role} onChange={event => changeProject(event, index)} error={!!getError(index, 'role')} helperText={getError(index, 'role')} />
-                                                  </FormControl>
-                                                </Col>
-                                              )
-                                              : null
-                                        }
-
-                              <Col className="minus-button" md="auto">
-                                <Button variant="contained" className="input_add_btn gray" onClick={event => deleteProject(event, index)}><img src={Minus} alt="minus" /></Button>
-                              </Col>
-                            </Row>
-                          ))
-                            }
-                        </React.Fragment>
-                      )
-                }
-
-        <PortfolioFiles
-          jobType={Sign.getUserType()}
-          files={files}
-          addPicture={addPicture}
-          deletePicture={deletePicture}
+    <React.Fragment>
+      { Sign.getUserType() ? null : <Redirect to="/SignUp/type" /> }
+      <div className="join_form">
+        <SimpleDialog
+          isOpen={signed}
+          content="You signed up for Indians. Please log in."
+          title="Indiens"
+          close={dialogSwitch}
         />
+        <div className="join_title pb80">
+          <h3>
+              Now let's check some things you can do
+            <br />
+              as an Indian.
+          </h3>
+          <img src={Step3} alt="step3" />
+          <p>
+              STEP 3
+            <br />
+              Register your portfolio
+          </p>
+        </div>
+
+        <Container className="portfolio">
+          <Row className="input-container">
+            <Col md={3}>
+              <FormControl className="experience" error={!!errors.experience}>
+                <InputLabel id="Experience">Experience</InputLabel>
+                <Select
+                  labelId="Experience"
+                  id="experience-select"
+                  name="experience"
+                  value={userPortfolio.experience}
+                  onChange={changeExperience}
+                  defaultValue="Select"
+                >
+                  {experience.map((data, index) => (
+                    <MenuItem key={data.id} value={data.id}>{data.title}</MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.experience}</FormHelperText>
+              </FormControl>
+            </Col>
+            <Col />
+          </Row>
+
+          <Row>
+            <Col className="label_plus">
+              <label className="label_txt">Game developed or participated</label>
+              {
+                  check ? null
+                    : <Button variant="contained" className="input_add_btn" onClick={addProject}><img src={Plus} alt="plus" /></Button>
+                }
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <FormControlLabel
+                control={(
+                  <Checkbox
+                    checked={check}
+                    onChange={changeCheckbox}
+                    value="checkedB"
+                    color="primary"
+                  />
+                    )}
+                label="Later"
+              />
+            </Col>
+          </Row>
+
+          {
+              check ? null
+                : (
+                  <React.Fragment>
+                    {userPortfolio.projects.map((project, index) => (
+                      <Row key={index} className="project-info">
+                        <Col className="project-creator" md={3}>
+                          <FormControl error={!!getError(index, 'type')}>
+                            <InputLabel id="ProjectType">Project type</InputLabel>
+                            <Select
+                              labelId="ProjectType"
+                              id="experience-select"
+                              name="type"
+                              value={project.type}
+                              onChange={event => changeProject(event, index)}
+                            >
+                              <MenuItem value={1}>Personal</MenuItem>
+                              <MenuItem value={2}>Participated</MenuItem>
+                            </Select>
+                            {errors.projects[index]
+                              ? <FormHelperText>{getError(index, 'type')}</FormHelperText> : null
+                                  }
+                          </FormControl>
+                        </Col>
+                        <Col>
+                          <FormControl>
+                            <TextField id="projName" label="Name" name="name" value={project.name} onChange={event => changeProject(event, index)} error={!!getError(index, 'name')} helperText={getError(index, 'name')} />
+                          </FormControl>
+                        </Col>
+                        {
+                                project.type === 2
+                                  ? (
+                                    <Col>
+                                      <FormControl>
+                                        <TextField id="projRole" label="Role" name="role" value={project.role} onChange={event => changeProject(event, index)} error={!!getError(index, 'role')} helperText={getError(index, 'role')} />
+                                      </FormControl>
+                                    </Col>
+                                  )
+                                  : null
+                              }
+
+                        <Col className="minus-button" md="auto">
+                          <Button variant="contained" className="input_add_btn gray" onClick={event => deleteProject(event, index)}><img src={Minus} alt="minus" /></Button>
+                        </Col>
+                      </Row>
+                    ))
+                        }
+                  </React.Fragment>
+                )
+            }
+
+          <PortfolioFiles
+            jobType={Sign.getUserType() ? Sign.getUserType() : '1'}
+            files={files}
+            addPicture={addPicture}
+            deletePicture={deletePicture}
+            textFieldChange={changeExperience}
+            portfolio={userPortfolio}
+            checkboxClick={langClick}
+          />
 
 
-      </Container>
+        </Container>
 
 
-      <div layout="row" className="join_btn type">
-        <Button variant="contained" className="gray" style={{ width: '20%' }} onClick={goBack}>
-                    Back
-        </Button>
-        <Button variant="contained" style={{ width: '70%' }} onClick={handleClick}>
-                    Sign Up
-        </Button>
+        <div layout="row" className="join_btn type">
+          <Button variant="contained" className="gray" style={{ width: '20%' }} onClick={() => goBack('/SignUp/type')}>
+              Back
+          </Button>
+          <Button variant="contained" style={{ width: '70%' }} onClick={handleClick}>
+              Sign Up
+          </Button>
+        </div>
+        <div />
       </div>
-      <div />
-    </div>
+    </React.Fragment>
   );
 }
 

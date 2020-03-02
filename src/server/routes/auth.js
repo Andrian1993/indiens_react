@@ -133,6 +133,15 @@ router.post('/signup', (req, res) => {
     MEM_SKILLS: data.experience
   };
 
+  if (data.langs) {
+    const { langs } = data;
+    const hasTrueKeys = Object.keys(langs).some(k => langs[k]);
+    if (hasTrueKeys) userData.MEM_LANG = JSON.stringify(data.langs);
+  }
+  if (data.langEtc) userData.MEM_LANG_ETC = data.langEtc;
+  if (data.link) userData.MEM_LINK = data.link;
+  if (data.job) userData.MEM_JOB = data.job;
+
   bcrypt.hash(data.password, saltRounds, (err, hash) => {
     userData.MEM_PASS = hash;
     if (err) {

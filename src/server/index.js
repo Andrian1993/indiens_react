@@ -46,5 +46,6 @@ app.use('/attach', express.static('/home/indiens/upload/attach/'));
 app.use('/auth', require('./routes/auth'));
 app.use('/TB_MESSAGE', require('./routes/TB_MESSAGE'));
 app.use('/TB_PORTFOLIO', require('./routes/TB_PORTFOLIO'));
+app.use('/TB_MEMBER', require('./routes/TB_MEMBER'));
 
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
